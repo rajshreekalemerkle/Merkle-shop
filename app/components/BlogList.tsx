@@ -1,34 +1,30 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import type { BlogPost } from '~/types/contefultypes';
 
-
 export function BlogList({ posts }: { posts: BlogPost[] }) {
-    useEffect(() => {
-        console.log(posts); // This will print the posts data structure to the console
-      }, [posts]);
+  const [expandedIndex, setExpandedIndex] = useState(0);
+
+  useEffect(() => {
+    console.log(posts);
+  }, [posts]);
+
   return (
     <section className="blog-list-container">
-      <h1 className="blog-title">Latest Blog Posts</h1>
+      <h1 className="blog-title">Latest Blog</h1>
       <div className="blog-list-grid">
         {posts.map((post, index) => (
           <article
             key={index}
-            className="blog-post-card"
+            className={`blog-post-card ${expandedIndex === index ? 'expanded' : ''}`}
+            onMouseEnter={() => setExpandedIndex(index)}
           >
-            <div className="blog-post-content">
-              <h2 className="blog-post-title">{post.title}</h2>
-            </div>
-
-            <div className="hover-content">
+            <div className="image-overlay-wrapper">
               {post.imageUrl && (
-                <img
-                  src={post.imageUrl}
-                  
-                  className="blog-post-image"
-                />
+                <img src={post.imageUrl} className="blog-post-image" />
               )}
-              <div className="blog-post-description">
-                <p>{post.content}</p>
+              <div className="overlay-text">
+                <h2 className="blog-post-title">{post.title}</h2>
+                <p className="blog-post-description">{post.content}</p>
               </div>
             </div>
           </article>
