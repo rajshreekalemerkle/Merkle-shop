@@ -61,10 +61,8 @@ export default function Homepage() {
   
   return (
     <div className="home">
-      <FeaturedCollection collection={data.featuredCollection} />
-      <RecommendedProducts products={data.recommendedProducts} />
-    
-      
+      <ImageCollection></ImageCollection>
+      <RecommendedProducts products={data.recommendedProducts} />  
     </div>
   );
 }
@@ -88,6 +86,37 @@ function FeaturedCollection({
       )}
       <h1>{collection.title}</h1>
     </Link>
+  );
+}
+
+function ImageCollection() {
+  return (
+    <div id="carouselExampleAutoplaying" className="carousel slide" data-bs-ride="carousel">
+      <div className="carousel-inner">
+        <div className="carousel-item active">
+          <div className="slideshow__text ">
+              <h2 className="banner__heading inline-richtext h0">
+                  <strong>Limited Edtion for Queen style Fashion</strong>
+                </h2>
+                <div className="banner__text rte">
+                  <p>Awesome products for the dynamic Lifestyle</p>
+                </div>
+          </div>
+          <img src="//extentia-test-store.myshopify.com/cdn/shop/files/queen-style-fashion.png?v=1744541808&width=3840" className="d-block w-100" alt="..."/>
+        </div>
+        <div className="carousel-item">
+          <img src="//extentia-test-store.myshopify.com/cdn/shop/files/bearded-young-man.jpg?v=1709550429&width=3840" className="d-block w-100" alt="..."/>
+        </div>
+      </div>
+      <button className="carousel-control-prev" type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide="prev">
+        <span className="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span className="visually-hidden">Previous</span>
+      </button>
+      <button className="carousel-control-next" type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide="next">
+        <span className="carousel-control-next-icon" aria-hidden="true"></span>
+        <span className="visually-hidden">Next</span>
+      </button>
+    </div>
   );
 }
 

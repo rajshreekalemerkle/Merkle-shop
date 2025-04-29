@@ -608,3 +608,27 @@ body {
   opacity: 1;
   transform: translateY(0);
 }
+
+.carousel-item {
+  img {
+    height: 30rem;
+  }
+
+  .slideshow__text {
+    position: absolute;
+    top: 30%;
+    padding: 20px;
+    width: 320px;
+  }
+}
+
+.recommended-products-grid {
+  a {
+    color: black!important;
+    text-decoration: none!important;
+  }
+}
+
+a {
+  text-decoration: none!important;
+}

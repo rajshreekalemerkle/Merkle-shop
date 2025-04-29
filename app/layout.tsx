@@ -23,6 +23,8 @@ export default function Layout() {
         <meta name="viewport" content="width=device-width,initial-scale=1" />
         <link rel="stylesheet" href={resetStyles}></link>
         <link rel="stylesheet" href={appStyles}></link>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css" rel="stylesheet"></link>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js"></script>
         <Meta />
         <Links />
       </head>
