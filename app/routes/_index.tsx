@@ -14,6 +14,7 @@ export const meta: MetaFunction = () => {
 export async function loader(args: LoaderFunctionArgs) {
   // Start fetching non-critical data without blocking time to first byte
   const deferredData = loadDeferredData(args);
+ 
 
   // Await the critical data required to render initial state of the page
   const criticalData = await loadCriticalData(args);
@@ -57,10 +58,13 @@ function loadDeferredData({context}: LoaderFunctionArgs) {
 
 export default function Homepage() {
   const data = useLoaderData<typeof loader>();
+  
   return (
     <div className="home">
       <FeaturedCollection collection={data.featuredCollection} />
       <RecommendedProducts products={data.recommendedProducts} />
+    
+      
     </div>
   );
 }
