@@ -15,6 +15,13 @@ img {
   border-radius: 4px;
 }
 
+.headerlogo{
+  margin-top: 15px;
+    padding: 10px;
+    width: 12rem;
+}
+
+
 /*
 * --------------------------------------------------
 * Non anchor links
@@ -137,6 +144,7 @@ aside li {
 
 button.reset {
   border: 0;
+  color:white !important;
   background: inherit;
   font-size: inherit;
 }
@@ -154,6 +162,9 @@ button.reset:hover:not(:has(> *)) {
   text-decoration: underline;
   cursor: pointer;
 }
+.carttext{
+  color:white !important;
+}
 
 /*
 * --------------------------------------------------
@@ -162,7 +173,7 @@ button.reset:hover:not(:has(> *)) {
 */
 .header {
   align-items: center;
-  background: #fff;
+  background: #242833;
   display: flex;
   height: var(--header-height);
   padding: 0 1rem;

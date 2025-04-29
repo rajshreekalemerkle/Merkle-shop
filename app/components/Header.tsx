@@ -27,7 +27,7 @@ export function Header({
   return (
     <header className="header">
       <NavLink prefetch="intent" to="/" style={activeLinkStyle} end>
-        <strong>{shop.name}</strong>
+        <img  className="headerlogo" src="//extentia-test-store.myshopify.com/cdn/shop/files/m-shop.png"></img>
       </NavLink>
       <HeaderMenu
         menu={menu}
@@ -154,7 +154,7 @@ function CartBadge({count}: {count: number | null}) {
         } as CartViewPayload);
       }}
     >
-      Cart {count === null ? <span>&nbsp;</span> : count}
+    <span className="carttext"> Cart {count === null ? <span>&nbsp;</span> : count}</span> 
     </a>
   );
 }
@@ -226,6 +226,6 @@ function activeLinkStyle({
 }) {
   return {
     fontWeight: isActive ? 'bold' : undefined,
-    color: isPending ? 'grey' : 'black',
+    color: isPending ? 'white' : 'white',
   };
 }
