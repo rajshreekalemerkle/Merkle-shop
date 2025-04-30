@@ -8,6 +8,7 @@ import {
 } from '@remix-run/react';
 import favicon from '~/assets/favicon.svg';
 import {FOOTER_QUERY, HEADER_QUERY} from '~/lib/fragments';
+import { CUSTOMER_DETAILS_QUERY } from './graphql/customer-account/CustomerDetailsQuery';
 
 export type RootLoader = typeof loader;
 
@@ -65,11 +66,28 @@ export async function loader(args: LoaderFunctionArgs) {
   const criticalData = await loadCriticalData(args);
 
   const {storefront, env} = args.context;
+ // Add GraphQL call to Customer API
+ const isLoggedIn = await deferredData.isLoggedIn;
+    let customerData;
+    if (isLoggedIn) {
+      const { data, errors } = await args.context.customerAccount.query(
+          CUSTOMER_DETAILS_QUERY,
+      );
+      customerData = data.customer
+    } else {
+      customerData = {}
+    }
 
   return {
     ...deferredData,
     ...criticalData,
     publicStoreDomain: env.PUBLIC_STORE_DOMAIN,
+    // Add the two properties below to the returned value
+    brazeApiKey: process.env.BRAZE_API_KEY,
+    brazeApiUrl: process.env.BRAZE_API_URL,
+    // Add the property below to the returned value 
+    // eslint-disable-next-line object-shorthand
+    customerData: customerData,
     shop: getShopAnalytics({
       storefront,
       publicStorefrontId: env.PUBLIC_STOREFRONT_ID,

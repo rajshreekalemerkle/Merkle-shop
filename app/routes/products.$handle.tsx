@@ -11,6 +11,8 @@ import {
 import {ProductPrice} from '~/components/ProductPrice';
 import {ProductImage} from '~/components/ProductImage';
 import {ProductForm} from '~/components/ProductForm';
+import { useEffect } from 'react';
+import { trackProductViewed } from '~/components/Tracking';
 
 export const meta: MetaFunction<typeof loader> = ({data}) => {
   return [
@@ -61,6 +63,8 @@ async function loadCriticalData({
 
   return {
     product,
+    // Add this property to the returned value
+    storefrontUrl: context.env.PUBLIC_STORE_DOMAIN,
   };
 }
 
@@ -77,7 +81,11 @@ function loadDeferredData({context, params}: LoaderFunctionArgs) {
 }
 
 export default function Product() {
-  const {product} = useLoaderData<typeof loader>();
+  const {product, storefrontUrl} = useLoaderData<typeof loader>();
+  // Add useEffect hook for tracking product_viewed event 
+  useEffect(() => {
+    trackProductViewed(product, storefrontUrl)
+  }, [])
 
   // Optimistically selects a variant with given available variant information
   const selectedVariant = useOptimisticVariant(

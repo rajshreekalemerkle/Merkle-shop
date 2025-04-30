@@ -90,6 +90,9 @@ export async function action({request, context}: ActionFunctionArgs) {
   return data(
     {
       cart: cartResult,
+       // Add these two properties to the returned value 
+       updatedCart: await cart.get(),
+       storefrontUrl: context.env.PUBLIC_STORE_DOMAIN,
       errors,
       warnings,
       analytics: {

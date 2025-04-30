@@ -11,10 +11,32 @@ import resetStyles from '~/styles/reset.css?url';
 import appStyles from '~/styles/app.css?url';
 import {PageLayout} from '~/components/PageLayout';
 import {RootLoader} from './root';
+import * as braze from "@braze/web-sdk";
+import { useEffect } from 'react';
+import { trackCustomerLogin } from './components/Tracking';
 
-export default function Layout() {
+interface LayoutProps {
+  children: React.ReactNode;
+}
+
+export default function Layout({ children }: LayoutProps) {
   const nonce = useNonce();
-  const data = useRouteLoaderData<RootLoader>('root');
+  const data:any = useRouteLoaderData<RootLoader>('root');
+  useEffect(() => {
+    if (!braze.isInitialized()) {
+      braze.initialize(data.brazeApiKey, {
+        baseUrl: data.brazeApiUrl,
+      });
+      braze.openSession();
+    }
+  }, [data]);
+
+   // Add call to trackCustomerLogin function
+   data.isLoggedIn.then((isLoggedIn:any) => {
+    if(isLoggedIn) {
+      trackCustomerLogin(data.customerData, data.publicStoreDomain)
+    }
+  })
 
   return (
     <html lang="en">

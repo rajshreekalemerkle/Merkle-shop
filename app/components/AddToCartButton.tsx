@@ -1,5 +1,7 @@
-import {type FetcherWithComponents} from '@remix-run/react';
+import {useFetcher, type FetcherWithComponents} from '@remix-run/react';
 import {CartForm, type OptimisticCartLineInput} from '@shopify/hydrogen';
+import { useEffect } from 'react';
+import { setCartToken, trackCartUpdated } from './Tracking';
 
 export function AddToCartButton({
   analytics,
@@ -14,8 +16,17 @@ export function AddToCartButton({
   lines: Array<OptimisticCartLineInput>;
   onClick?: () => void;
 }) {
+  // Define a new Fetcher to be used for tracking cart updates 
+  const fetcher:any = useFetcher({ key: "cart-fetcher" });
+   // Add useEffect hook for tracking cart_updated event and setting cart token alias
+   useEffect(() => {
+    if(fetcher.state === "idle" && fetcher.data) {
+      trackCartUpdated(fetcher.data.updatedCart, fetcher.data.storefrontUrl)
+      setCartToken(fetcher.data.updatedCart);
+    }
+  }, [fetcher.state, fetcher.data])
   return (
-    <CartForm route="/cart" inputs={{lines}} action={CartForm.ACTIONS.LinesAdd}>
+    <CartForm route="/cart" inputs={{lines}} fetcherKey="cart-fetcher" action={CartForm.ACTIONS.LinesAdd}>
       {(fetcher: FetcherWithComponents<any>) => (
         <>
           <input
