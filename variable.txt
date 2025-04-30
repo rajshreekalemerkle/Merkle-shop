@@ -1,0 +1,5 @@
+PUBLIC_CHECKOUT_DOMAIN=merkle-shop.myshopify.com
+CONTENTFUL_SPACE_ID=ll66snvweeb7
+CONTENTFUL_ACCESS_TOKEN=mErSxsEkpOUs_56fRjR21_mwLSkEBtld2ue8arOImNo
+BRAZE_API_KEY=c9235ef7-127a-4f0b-8f10-4a475aa0aeaf
+BRAZE_API_URL=sdk.iad-06.braze.com
