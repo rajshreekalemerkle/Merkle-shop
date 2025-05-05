@@ -1,0 +1,82 @@
+/* ProductTabs.css */
+
+.product-tabs {
+  width: 100vw;
+  background-color: #1e242c;
+  color: white;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  padding: 40px;
+  border-radius: 12px;
+}
+
+.tabs-nav {
+  display: flex;
+  justify-content: center; /* Center the tab buttons horizontally */
+  border-bottom: 2px solid #2c343e;
+  margin-bottom: 30px;
+  gap: 24px; /* Optional: space between buttons */
+  flex-wrap: wrap; /* Optional: allows wrapping on smaller screens */
+}
+
+
+.tab-button {
+  background: none;
+  border: none;
+  color: #ccc;
+  padding: 12px 24px;
+  font-size: 24px;
+  cursor: pointer;
+  border-bottom: 3px solid transparent;
+  transition: all 0.3s ease;
+}
+
+.tab-button.active {
+  color: white;
+  border-bottom: 3px solid #34ff87;
+  font-weight: 600;
+}
+
+.tab-button:hover {
+  color: white;
+}
+
+.tabs-content {
+  font-size: 18px;
+}
+
+/* Description Tab Styling */
+.description-content {
+  line-height: 1.6;
+}
+
+/* Specifications Grid */
+.specifications-content ul {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 20px;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.specifications-content li {
+  background-color: #2a2f38;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+}
+
+.specifications-content li strong {
+  display: block;
+  color: #b0bec5;
+  font-size: 14px;
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+
+.specifications-content li::after {
+  content: "";
+  display: block;
+  margin-top: 10px;
+  border-bottom: 1px solid #3c434f;
+}

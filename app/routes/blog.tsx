@@ -3,7 +3,7 @@ import { LoaderFunctionArgs, json } from '@shopify/remix-oxygen';
 import { useLoaderData } from '@remix-run/react';
 import { fetchContentfulData } from '~/lib/contentful';
 import type { BlogPost } from '~/types/contefultypes';
-import { BlogList } from '~/components/BlogList';
+import { BlogList } from '~/components/BlogList/BlogList';
 
 export async function loader({}: LoaderFunctionArgs) {
   const query = `

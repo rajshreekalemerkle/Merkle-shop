@@ -13,6 +13,8 @@ import {ProductImage} from '~/components/ProductImage';
 import {ProductForm} from '~/components/ProductForm';
 import { useEffect } from 'react';
 import { trackProductViewed } from '~/components/Tracking';
+import { fetchProductTabsByHandle } from '~/lib/contentful';
+import { ProductTabs } from '~/components/ProductTabs/ProductTabs';
 
 export const meta: MetaFunction<typeof loader> = ({data}) => {
   return [
@@ -50,12 +52,14 @@ async function loadCriticalData({
     throw new Error('Expected product handle to be defined');
   }
 
-  const [{product}] = await Promise.all([
+  const [{product}, productTabs] = await Promise.all([
     storefront.query(PRODUCT_QUERY, {
       variables: {handle, selectedOptions: getSelectedProductOptions(request)},
     }),
-    // Add other queries here, so that they are loaded in parallel
+    fetchProductTabsByHandle(handle),
   ]);
+  
+ 
 
   if (!product?.id) {
     throw new Response(null, {status: 404});
@@ -65,6 +69,7 @@ async function loadCriticalData({
     product,
     // Add this property to the returned value
     storefrontUrl: context.env.PUBLIC_STORE_DOMAIN,
+    productTabs,
   };
 }
 
@@ -81,8 +86,8 @@ function loadDeferredData({context, params}: LoaderFunctionArgs) {
 }
 
 export default function Product() {
-  const {product, storefrontUrl} = useLoaderData<typeof loader>();
-  // Add useEffect hook for tracking product_viewed event 
+  const {product, storefrontUrl, productTabs }  = useLoaderData<typeof loader>();
+  // Add useEffect hook for tracking product_viewed eent 
   useEffect(() => {
     trackProductViewed(product, storefrontUrl)
   }, [])
@@ -104,30 +109,37 @@ export default function Product() {
   });
 
   const {title, descriptionHtml} = product;
+  const tabs = productTabs?.productTabsCollection?.items[0]?.tabs || [];
 
+  console.log('Tabs Data:', tabs);
   return (
     <div className="product">
-      <ProductImage image={selectedVariant?.image} />
-      <div className="product-main">
-        <h1>{title}</h1>
-        <ProductPrice
-          price={selectedVariant?.price}
-          compareAtPrice={selectedVariant?.compareAtPrice}
-        />
-        <br />
-        <ProductForm
-          productOptions={productOptions}
-          selectedVariant={selectedVariant}
-        />
-        <br />
-        <br />
-        <p>
-          <strong>Description</strong>
-        </p>
-        <br />
-        <div dangerouslySetInnerHTML={{__html: descriptionHtml}} />
-        <br />
+      {/* Product Section: Image and Info */}
+      <div className="product-upper">
+        <div className="product-image-container">
+          <ProductImage image={selectedVariant?.image} />
+        </div>
+        <div className="product-info-container">
+          <h1>{title}</h1>
+          <ProductPrice
+            price={selectedVariant?.price}
+            compareAtPrice={selectedVariant?.compareAtPrice}
+          />
+          <br />
+          <ProductForm
+            productOptions={productOptions}
+            selectedVariant={selectedVariant}
+          />
+          <br />
+          <br />
+          <p>
+            <strong>Description</strong>
+          </p>
+          <br />
+          <div dangerouslySetInnerHTML={{__html: descriptionHtml}} />
+        </div>
       </div>
+
       <Analytics.ProductView
         data={{
           products: [
@@ -143,6 +155,15 @@ export default function Product() {
           ],
         }}
       />
+
+      {/* Full-width Product Tabs Section */}
+      <div className="product-tabs-container">
+        {tabs.length ? (
+          <ProductTabs tabs={tabs} />
+        ) : (
+          <p>No additional product details available.</p>
+        )}
+      </div>
     </div>
   );
 }
