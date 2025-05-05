@@ -11,9 +11,7 @@ import resetStyles from '~/styles/reset.css?url';
 import appStyles from '~/styles/app.css?url';
 import {PageLayout} from '~/components/PageLayout';
 import {RootLoader} from './root';
-import * as braze from "@braze/web-sdk";
 import { useEffect } from 'react';
-import { trackCustomerLogin } from './components/Tracking';
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -21,22 +19,7 @@ interface LayoutProps {
 
 export default function Layout({ children }: LayoutProps) {
   const nonce = useNonce();
-  const data:any = useRouteLoaderData<RootLoader>('root');
-  useEffect(() => {
-    if (!braze.isInitialized()) {
-      braze.initialize(data.brazeApiKey, {
-        baseUrl: data.brazeApiUrl,
-      });
-      braze.openSession();
-    }
-  }, [data]);
-
-   // Add call to trackCustomerLogin function
-   data.isLoggedIn.then((isLoggedIn:any) => {
-    if(isLoggedIn) {
-      trackCustomerLogin(data.customerData, data.publicStoreDomain)
-    }
-  })
+  const data:any = useRouteLoaderData<RootLoader>('root');   
 
   return (
     <html lang="en">

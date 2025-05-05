@@ -1,7 +1,6 @@
 import {useFetcher, type FetcherWithComponents} from '@remix-run/react';
 import {CartForm, type OptimisticCartLineInput} from '@shopify/hydrogen';
 import { useEffect } from 'react';
-import { setCartToken, trackCartUpdated } from './Tracking';
 
 export function AddToCartButton({
   analytics,
@@ -21,8 +20,7 @@ export function AddToCartButton({
    // Add useEffect hook for tracking cart_updated event and setting cart token alias
    useEffect(() => {
     if(fetcher.state === "idle" && fetcher.data) {
-      trackCartUpdated(fetcher.data.updatedCart, fetcher.data.storefrontUrl)
-      setCartToken(fetcher.data.updatedCart);
+    
     }
   }, [fetcher.state, fetcher.data])
   return (
