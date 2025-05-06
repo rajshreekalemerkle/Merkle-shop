@@ -12,7 +12,6 @@ import {ProductPrice} from '~/components/ProductPrice';
 import {ProductImage} from '~/components/ProductImage';
 import {ProductForm} from '~/components/ProductForm';
 import { useEffect } from 'react';
-import { trackProductViewed } from '~/components/Tracking';
 import { fetchProductTabsByHandle } from '~/lib/contentful';
 import { ProductTabs } from '~/components/ProductTabs/ProductTabs';
 
@@ -88,10 +87,7 @@ function loadDeferredData({context, params}: LoaderFunctionArgs) {
 export default function Product() {
   const {product, storefrontUrl, productTabs }  = useLoaderData<typeof loader>();
   // Add useEffect hook for tracking product_viewed eent 
-  useEffect(() => {
-    trackProductViewed(product, storefrontUrl)
-  }, [])
-
+ 
   // Optimistically selects a variant with given available variant information
   const selectedVariant = useOptimisticVariant(
     product.selectedOrFirstAvailableVariant,

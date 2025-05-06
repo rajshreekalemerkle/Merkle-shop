@@ -9,6 +9,7 @@ import {
 import favicon from '~/assets/favicon.svg';
 import {FOOTER_QUERY, HEADER_QUERY} from '~/lib/fragments';
 import { CUSTOMER_DETAILS_QUERY } from './graphql/customer-account/CustomerDetailsQuery';
+import BrazeProvider from './components/BrazeProvider';
 
 export type RootLoader = typeof loader;
 
@@ -77,14 +78,13 @@ export async function loader(args: LoaderFunctionArgs) {
     } else {
       customerData = {}
     }
-
   return {
     ...deferredData,
     ...criticalData,
     publicStoreDomain: env.PUBLIC_STORE_DOMAIN,
     // Add the two properties below to the returned value
-    brazeApiKey: process.env.BRAZE_API_KEY,
-    brazeApiUrl: process.env.BRAZE_API_URL,
+    brazeApiKey: 'c9235ef7-127a-4f0b-8f10-4a475aa0aeaf',
+    brazeApiUrl: 'sdk.iad-06.braze.com',
     // Add the property below to the returned value 
     // eslint-disable-next-line object-shorthand
     customerData: customerData,
@@ -152,7 +152,11 @@ function loadDeferredData({context}: LoaderFunctionArgs) {
 }
 
 export default function App() {
-  return <Outlet />;
+  console.log( 'app') ;
+  return (<>
+  <Outlet />
+  <BrazeProvider/>
+  </>);
 }
 
 export function ErrorBoundary() {
@@ -166,7 +170,7 @@ export function ErrorBoundary() {
   } else if (error instanceof Error) {
     errorMessage = error.message;
   }
-
+  console.log('before') ;
   return (
     <div className="route-error">
       <h1>Oops</h1>

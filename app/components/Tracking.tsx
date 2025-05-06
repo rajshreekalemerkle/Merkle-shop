@@ -1,4 +1,5 @@
-import * as braze from "@braze/web-sdk";
+//import * as braze from "@braze/web-sdk";
+const braze = await import("@braze/web-sdk"); 
 
 export function trackCustomerLogin(customerData: any, storefrontUrl:any) {
   const customerId = customerData.id.substring(customerData.id.lastIndexOf('/') + 1)
