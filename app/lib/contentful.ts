@@ -1,8 +1,9 @@
 
+import { languageMap } from "./languageMapping";
 
   export async function fetchContentfulData<T>({
     query,
-    variables = {},
+    language,
   }: any): Promise<T> {
     const spaceId = 'll66snvweeb7';
     const accessToken = 'mErSxsEkpOUs_56fRjR21_mwLSkEBtld2ue8arOImNo';
@@ -11,6 +12,7 @@
     if (!spaceId || !accessToken) {
       throw new Error("Contentful credentials are not set in environment variables.");
     }
+    const locale = languageMap[language];    
   
     const response = await fetch(
       `https://graphql.contentful.com/content/v1/spaces/${spaceId}/environments/master`,
@@ -22,9 +24,9 @@
         },
         body: JSON.stringify({
             query: `{
-              blogPageCollection {
+              blogPageCollection(locale: "${locale}") {
                 items {
-                  title
+                  title,
                   content
                   imageUrl
                 }

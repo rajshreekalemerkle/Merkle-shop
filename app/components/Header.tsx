@@ -1,5 +1,5 @@
 import {Suspense} from 'react';
-import {Await, NavLink, useAsyncValue} from '@remix-run/react';
+import {Await, NavLink, useAsyncValue, useLocation, useNavigate} from '@remix-run/react';
 import {
   type CartViewPayload,
   useAnalytics,
@@ -7,6 +7,7 @@ import {
 } from '@shopify/hydrogen';
 import type {HeaderQuery, CartApiQueryFragment} from 'storefrontapi.generated';
 import {useAside} from '~/components/Aside';
+
 
 interface HeaderProps {
   header: HeaderQuery;
@@ -110,8 +111,44 @@ function HeaderCtas({
         </Suspense>
       </NavLink>
       <SearchToggle />
+      <LanguageSelector/>
       <CartToggle cart={cart} />
     </nav>
+  );
+}
+
+export function LanguageSelector() {
+
+  const location = useLocation();
+  const navigate = useNavigate();
+  
+  const SUPPORTED_LOCALES = [
+    {
+      key: 'HI', value: 'Hindi'
+    },
+    {
+      key: 'EN', value: 'English'
+    }
+  ]
+
+  const currentPath = location.pathname;
+  const segments = currentPath.split('/');
+  const currentLocale = 'EN';
+
+  const handleChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    const newLocale = event.target.value;
+    navigate(segments.join('/') + '/' + newLocale);
+
+  };
+
+  return (
+    <select value={currentLocale} onChange={handleChange} className="p-2 border rounded">
+      {SUPPORTED_LOCALES.map((locale) => (
+        <option key={locale.key} value={locale.key}>
+          {locale.value}
+        </option>
+      ))}
+    </select>
   );
 }
 

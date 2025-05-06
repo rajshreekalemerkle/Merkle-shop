@@ -5,7 +5,8 @@ import { fetchContentfulData } from '~/lib/contentful';
 import type { BlogPost } from '~/types/contefultypes';
 import { BlogList } from '~/components/BlogList/BlogList';
 
-export async function loader({}: LoaderFunctionArgs) {
+export async function loader({context}: LoaderFunctionArgs) {
+
   const query = `
     {
       blogPageCollection {
@@ -18,7 +19,9 @@ export async function loader({}: LoaderFunctionArgs) {
     }
   `;
 
-  const data = await fetchContentfulData<any>({ query });
+  const { language, country } = context.storefront.i18n;
+
+  const data = await fetchContentfulData<any>({ query, language });
 
   return json({ posts: data.blogPageCollection.items });
 }
