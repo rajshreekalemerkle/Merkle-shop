@@ -10,7 +10,6 @@ import favicon from '~/assets/favicon.svg';
 import {FOOTER_QUERY, HEADER_QUERY} from '~/lib/fragments';
 import { CUSTOMER_DETAILS_QUERY } from './graphql/customer-account/CustomerDetailsQuery';
 import BrazeProvider from './components/BrazeProvider';
-
 export type RootLoader = typeof loader;
 
 /**
@@ -152,11 +151,11 @@ function loadDeferredData({context}: LoaderFunctionArgs) {
 }
 
 export default function App() {
-  console.log( 'app') ;
-  return (<>
-  <Outlet />
-  <BrazeProvider/>
-  </>);
+  return (
+      <BrazeProvider>
+        <Outlet />
+      </BrazeProvider>
+  );
 }
 
 export function ErrorBoundary() {
@@ -170,7 +169,6 @@ export function ErrorBoundary() {
   } else if (error instanceof Error) {
     errorMessage = error.message;
   }
-  console.log('before') ;
   return (
     <div className="route-error">
       <h1>Oops</h1>

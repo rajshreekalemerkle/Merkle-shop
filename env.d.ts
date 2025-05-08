@@ -32,4 +32,9 @@ declare module '@shopify/remix-oxygen' {
   interface SessionData extends HydrogenSessionData {
     // declare local additions to the Remix session data here
   }
+  declare global {
+    interface Window {
+      braze?: any;
+    }
+  }
 }

@@ -14,7 +14,7 @@ import {ProductForm} from '~/components/ProductForm';
 import { useEffect } from 'react';
 import { fetchProductTabsByHandle } from '~/lib/contentful';
 import { ProductTabs } from '~/components/ProductTabs/ProductTabs';
-
+import { trackProductViewed } from '~/components/Tracking';
 export const meta: MetaFunction<typeof loader> = ({data}) => {
   return [
     {title: `Hydrogen | ${data?.product.title ?? ''}`},
@@ -87,6 +87,10 @@ function loadDeferredData({context, params}: LoaderFunctionArgs) {
 export default function Product() {
   const {product, storefrontUrl, productTabs }  = useLoaderData<typeof loader>();
   // Add useEffect hook for tracking product_viewed eent 
+   // Add useEffect hook for tracking product_viewed event 
+   useEffect(() => {
+    trackProductViewed(product, storefrontUrl)
+  }, [])
  
   // Optimistically selects a variant with given available variant information
   const selectedVariant = useOptimisticVariant(
@@ -106,8 +110,7 @@ export default function Product() {
 
   const {title, descriptionHtml} = product;
   const tabs = productTabs?.productTabsCollection?.items[0]?.tabs || [];
-
-  console.log('Tabs Data:', tabs);
+ 
   return (
     <div className="product">
       {/* Product Section: Image and Info */}

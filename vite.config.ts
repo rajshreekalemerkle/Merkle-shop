@@ -48,4 +48,9 @@ export default defineConfig({
       exclude: ['@braze/web-sdk'],
     },
   },
+  server: {
+    allowedHosts: [
+      '8e94-2401-4900-1c7e-ea25-25d7-4e6a-50fd-2aee.ngrok-free.app'
+    ]
+  }
 });

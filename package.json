@@ -14,7 +14,7 @@
   },
   "prettier": "@shopify/prettier-config",
   "dependencies": {
-    "@braze/web-sdk": "^5.4.0",
+    "@braze/web-sdk": "^5.8.1",
     "@remix-run/react": "^2.16.1",
     "@remix-run/server-runtime": "^2.16.1",
     "@shopify/hydrogen": "2025.1.3",
@@ -56,6 +56,7 @@
     "eslint-plugin-react": "^7.37.4",
     "eslint-plugin-react-hooks": "^5.1.0",
     "globals": "^15.14.0",
+    "madge": "^8.0.0",
     "postcss": "^8.5.3",
     "prettier": "^3.4.2",
     "tailwindcss": "^4.1.4",
