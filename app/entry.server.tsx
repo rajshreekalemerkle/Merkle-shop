@@ -13,7 +13,7 @@ export default async function handleRequest(
 ) {
   const {nonce, header, NonceProvider} = createContentSecurityPolicy({
     shop: {
-      checkoutDomain: context.env.PUBLIC_CHECKOUT_DOMAIN,
+      checkoutDomain:'merkle-shop.myshopify.com',
       storeDomain: context.env.PUBLIC_STORE_DOMAIN,
     },
   });
