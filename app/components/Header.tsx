@@ -1,5 +1,5 @@
-import {Suspense} from 'react';
-import {Await, NavLink, useAsyncValue} from '@remix-run/react';
+import {Suspense, useEffect, useState} from 'react';
+import {Await, NavLink, useAsyncValue, useLocation, useNavigate} from '@remix-run/react';
 import {
   type CartViewPayload,
   useAnalytics,
@@ -110,9 +110,66 @@ function HeaderCtas({
         </Suspense>
       </NavLink>
       <SearchToggle />
+      <LanguageSelector/>
       <CartToggle cart={cart} />
     </nav>
   );
+}
+
+export function LanguageSelector() {
+
+  const location = useLocation();
+  const navigate = useNavigate();
+  
+  const SUPPORTED_LOCALES = [
+    {
+      key: 'HI', value: 'Hindi'
+    },
+    {
+      key: 'EN', value: 'English'
+    }
+  ]
+
+  const currentPath = location.pathname;
+  const segments = currentPath.split('/');
+
+  const initialLocale = 'EN';
+ 
+  const [currentLocale, setCurrentLocale] = useState(initialLocale);
+ 
+  useEffect(() => {
+    // Save selected locale to localStorage
+    localStorage.setItem('preferredLocale', currentLocale);
+  }, [currentLocale]);
+ 
+  const handleChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    const newLocale = event.target.value;
+    setCurrentLocale(newLocale);
+ 
+    // Replace or insert locale in the path
+    const newSegments = [...segments];
+    if (SUPPORTED_LOCALES.some(locale => locale.key === segments[0])) {
+      newSegments[0] = newLocale;
+    } else {
+      newSegments.unshift(newLocale);
+    }
+ 
+    navigate('/' + newSegments.join('/'));
+  };
+ 
+  return (
+    <select
+          value={currentLocale}
+          onChange={handleChange}
+          className="p-2 border rounded"
+    >
+          {SUPPORTED_LOCALES.map((locale) => (
+            <option key={locale.key} value={locale.key}>
+                      {locale.value}
+            </option>
+                  ))}
+            </select>
+    );
 }
 
 function HeaderMenuMobileToggle() {
