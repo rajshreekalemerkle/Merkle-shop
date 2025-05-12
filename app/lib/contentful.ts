@@ -86,6 +86,49 @@ export async function fetchProductTabsByHandle(shopifyHandle: string, language: 
 
   return json.data;
 }
+export async function fetchBlogList<T>({
+  language
+}: any): Promise<T>  {
+  const spaceId = 'll66snvweeb7';
+  const accessToken = 'mErSxsEkpOUs_56fRjR21_mwLSkEBtld2ue8arOImNo';
+
+  const locale = languageMap[language.toUpperCase()] || 'en-US';
+
+  const query = `
+    query GetBlogList {
+      blogListCollection(locale: "${locale}") {
+        items {
+          heading
+          list
+        }
+      }
+    }
+  `;
+
+  const response = await fetch(
+    `https://graphql.contentful.com/content/v1/spaces/${spaceId}/environments/master`,
+    {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${accessToken}`,
+      },
+      body: JSON.stringify({ query }),
+    }
+  );
+
+  const json = await response.json() as any;
+
+  if (json.errors) {
+    console.error("Contentful GraphQL errors (blogList):", json.errors);
+    throw new Error("Failed to fetch blog list from Contentful");
+  }
+
+  console.log("Fetched Blog List:", json.data?.blogListCollection?.items);
+
+  return json.data?.blogListCollection?.items;
+}
+
 
 
 
