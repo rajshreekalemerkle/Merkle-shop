@@ -69,3 +69,40 @@
     opacity: 1;
     transform: translateY(0);
   }
+  .blog-featured-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 2rem 0;
+    gap: 2rem;
+  }
+  
+  .row-normal {
+    flex-direction: row;
+  }
+  
+  .row-reverse {
+    flex-direction: row-reverse;
+  }
+  
+  .featured-image img {
+    width: 300px;
+    height: auto;
+    border-radius: 12px;
+    object-fit: cover;
+  }
+  
+  .featured-content {
+    flex: 1;
+  }
+  
+  .featured-content h2 {
+    margin: 0 0 1rem;
+    font-size: 1.5rem;
+  }
+  
+  .featured-content p {
+    font-size: 1rem;
+    line-height: 1.5;
+  }
+  
