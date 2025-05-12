@@ -5,20 +5,23 @@ import { fetchContentfulData } from '~/lib/contentful';
 import type { BlogPost } from '~/types/contefultypes';
 import { BlogList } from '~/components/BlogList/BlogList';
 import { useState } from 'react';
+import { getLocaleFromRequest } from '~/lib/i18n';
 
 
-export async function loader({context}: LoaderFunctionArgs) {
-  const query = ``;
 
-  const [selectedLanguage, setLang] = useState('en');
-  
+export async function loader({ request }: LoaderFunctionArgs) {
+  const locale = getLocaleFromRequest(request);
 
-  const { language, country } = context.storefront.i18n;
+  const data = await fetchContentfulData<any>({
+    language: locale.language,
+  });
 
-  const data = await fetchContentfulData<any>({ query, language });
+  const posts = data?.blogPageCollection?.items ?? [];
 
-  return json({ posts: data.blogPageCollection.items });
+  return json({ posts });
 }
+
+
 
 export default function Blog() {
   const { posts } = useLoaderData<{ posts: BlogPost[] }>();

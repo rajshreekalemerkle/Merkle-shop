@@ -117,60 +117,41 @@ function HeaderCtas({
 }
 
 export function LanguageSelector() {
+  const [currentLocale, setCurrentLocale] = useState('EN');
 
-  const location = useLocation();
-  const navigate = useNavigate();
-  
-  const SUPPORTED_LOCALES = [
-    {
-      key: 'HI', value: 'Hindi'
-    },
-    {
-      key: 'EN', value: 'English'
-    }
-  ]
-
-  const currentPath = location.pathname;
-  const segments = currentPath.split('/');
-
-  const initialLocale = 'EN';
- 
-  const [currentLocale, setCurrentLocale] = useState(initialLocale);
- 
   useEffect(() => {
-    // Save selected locale to localStorage
-    localStorage.setItem('preferredLocale', currentLocale);
-  }, [currentLocale]);
- 
-  const handleChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    const newLocale = event.target.value;
-    setCurrentLocale(newLocale);
- 
-    // Replace or insert locale in the path
-    const newSegments = [...segments];
-    if (SUPPORTED_LOCALES.some(locale => locale.key === segments[0])) {
-      newSegments[0] = newLocale;
-    } else {
-      newSegments.unshift(newLocale);
+    const cookieLang = document.cookie
+      .split('; ')
+      .find((row) => row.startsWith('language='))
+      ?.split('=')[1];
+    if (cookieLang) {
+      setCurrentLocale(cookieLang.toUpperCase());
     }
- 
-    navigate('/' + newSegments.join('/'));
+  }, []);
+
+  const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const newLang = e.target.value;
+    setCurrentLocale(newLang);
+
+    // Set cookie for server to read
+    document.cookie = `language=${newLang}; path=/; SameSite=Lax`;
+
+    // Optionally reload the page or trigger refetch
+    window.location.reload(); // Or use a more graceful state update
   };
- 
+
   return (
     <select
-          value={currentLocale}
-          onChange={handleChange}
-          className="p-2 border rounded"
+      value={currentLocale}
+      onChange={handleChange}
+      className="p-2 border rounded"
     >
-          {SUPPORTED_LOCALES.map((locale) => (
-            <option key={locale.key} value={locale.key}>
-                      {locale.value}
-            </option>
-                  ))}
-            </select>
-    );
+      <option value="EN">English</option>
+      <option value="HI">Hindi</option>
+    </select>
+  );
 }
+
 
 function HeaderMenuMobileToggle() {
   const {open} = useAside();
