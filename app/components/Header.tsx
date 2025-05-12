@@ -1,5 +1,5 @@
-import {Suspense} from 'react';
-import {Await, NavLink, useAsyncValue} from '@remix-run/react';
+import {Suspense, useEffect, useState} from 'react';
+import {Await, NavLink, useAsyncValue, useLocation, useNavigate} from '@remix-run/react';
 import {
   type CartViewPayload,
   useAnalytics,
@@ -110,10 +110,48 @@ function HeaderCtas({
         </Suspense>
       </NavLink>
       <SearchToggle />
+      <LanguageSelector/>
       <CartToggle cart={cart} />
     </nav>
   );
 }
+
+export function LanguageSelector() {
+  const [currentLocale, setCurrentLocale] = useState('EN');
+
+  useEffect(() => {
+    const cookieLang = document.cookie
+      .split('; ')
+      .find((row) => row.startsWith('language='))
+      ?.split('=')[1];
+    if (cookieLang) {
+      setCurrentLocale(cookieLang.toUpperCase());
+    }
+  }, []);
+
+  const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const newLang = e.target.value;
+    setCurrentLocale(newLang);
+
+    // Set cookie for server to read
+    document.cookie = `language=${newLang}; path=/; SameSite=Lax`;
+
+    // Optionally reload the page or trigger refetch
+    window.location.reload(); // Or use a more graceful state update
+  };
+
+  return (
+    <select
+      value={currentLocale}
+      onChange={handleChange}
+      className="p-2 border rounded language-selector"
+    >
+      <option value="EN">English</option>
+      <option value="ES">Spanish</option>
+    </select>
+  );
+}
+
 
 function HeaderMenuMobileToggle() {
   const {open} = useAside();

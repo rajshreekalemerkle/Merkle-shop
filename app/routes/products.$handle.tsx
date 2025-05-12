@@ -15,6 +15,7 @@ import { useEffect } from 'react';
 import { fetchProductTabsByHandle } from '~/lib/contentful';
 import { ProductTabs } from '~/components/ProductTabs/ProductTabs';
 import { trackProductViewed } from '~/components/Tracking';
+import { getLocaleFromRequest } from '~/lib/i18n';
 export const meta: MetaFunction<typeof loader> = ({data}) => {
   return [
     {title: `Hydrogen | ${data?.product.title ?? ''}`},
@@ -50,13 +51,26 @@ async function loadCriticalData({
   if (!handle) {
     throw new Error('Expected product handle to be defined');
   }
+  const locale = getLocaleFromRequest(request);
 
-  const [{product}, productTabs] = await Promise.all([
+  const [{ product }, productTabs] = await Promise.all([
     storefront.query(PRODUCT_QUERY, {
-      variables: {handle, selectedOptions: getSelectedProductOptions(request)},
+      variables: {
+        handle,
+        selectedOptions: getSelectedProductOptions(request),
+        language: locale.language,
+        //country: locale.country,
+      },
     }),
-    fetchProductTabsByHandle(handle),
+    fetchProductTabsByHandle(handle, locale.language),
   ]);
+  
+  // const [{product}, productTabs] = await Promise.all([
+  //   storefront.query(PRODUCT_QUERY, {
+  //     variables: {handle, selectedOptions: getSelectedProductOptions(request)},
+  //   }),
+  //   fetchProductTabsByHandle(handle),
+  // ]);
   
  
 

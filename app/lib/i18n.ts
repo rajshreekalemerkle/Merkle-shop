@@ -1,20 +1,28 @@
-import type {I18nBase} from '@shopify/hydrogen';
+
+
+type LanguageCode = 'EN' | 'HI' | 'FR' | 'DE' | 'JA' | 'ES';
+
+export interface I18nBase {
+  language: LanguageCode;
+  country: string;
+}
 
 export function getLocaleFromRequest(request: Request): I18nBase {
   const defaultLocale: I18nBase = {language: 'EN', country: 'US'};
-  const supportedLocales = {
-    ES: 'ES',
-    FR: 'FR',
-    DE: 'DE',
-    JP: 'JA',
-  } as Record<I18nBase['country'], I18nBase['language']>;
 
-  const url = new URL(request.url);
-  const firstSubdomain = url.hostname
-    .split('.')[0]
-    ?.toUpperCase() as keyof typeof supportedLocales;
+  const cookie = request.headers.get('cookie');
+  const languageMatch = cookie?.match(/language=(\w+)/);
+  const language = languageMatch?.[1]?.toUpperCase();
 
-  return supportedLocales[firstSubdomain]
-    ? {language: supportedLocales[firstSubdomain], country: firstSubdomain}
-    : defaultLocale;
+  const supportedLanguages: LanguageCode[] = ['EN', 'ES', 'FR', 'DE', 'JA'];
+
+  if (language && supportedLanguages.includes(language as LanguageCode)) {
+    return {
+      language: language as LanguageCode,
+      country: 'US',
+    };
+  }
+
+  return defaultLocale;
 }
+
