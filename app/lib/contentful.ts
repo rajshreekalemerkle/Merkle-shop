@@ -46,20 +46,20 @@ import { languageMap } from "./languageMapping";
   
     return json.data;
   }
- export async function fetchProductTabsByHandle(shopifyHandle: string) {
+export async function fetchProductTabsByHandle(shopifyHandle: string, language: string) {
   const spaceId = 'll66snvweeb7';
   const accessToken = 'mErSxsEkpOUs_56fRjR21_mwLSkEBtld2ue8arOImNo';
-console.log('to check handle',shopifyHandle);
+
+  const locale = languageMap[language.toUpperCase()] || 'en-US';
+
   const query = `
     query GetProductTabs($handle: String!) {
-      productTabsCollection(where: { shopifyHandle: $handle }, limit: 1) {
+      productTabsCollection(where: { shopifyHandle: $handle }, limit: 1, locale: "${locale}") {
         items {
-         
-          tabs 
-          }
+          tabs
         }
       }
-    
+    }
   `;
 
   const response = await fetch(
@@ -76,16 +76,17 @@ console.log('to check handle',shopifyHandle);
       }),
     }
   );
-  
 
   const json = await response.json() as any;
 
-  
-
-  
+  if (json.errors) {
+    console.error("Contentful GraphQL errors:", json.errors);
+    throw new Error("Failed to fetch product tabs from Contentful");
+  }
 
   return json.data;
 }
+
 
 
   
