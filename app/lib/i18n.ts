@@ -1,6 +1,6 @@
 
 
-type LanguageCode = 'EN' | 'HI' | 'FR' | 'DE' | 'JA';
+type LanguageCode = 'EN' | 'HI' | 'FR' | 'DE' | 'JA' | 'ES';
 
 export interface I18nBase {
   language: LanguageCode;
@@ -14,7 +14,7 @@ export function getLocaleFromRequest(request: Request): I18nBase {
   const languageMatch = cookie?.match(/language=(\w+)/);
   const language = languageMatch?.[1]?.toUpperCase();
 
-  const supportedLanguages: LanguageCode[] = ['EN', 'HI', 'FR', 'DE', 'JA'];
+  const supportedLanguages: LanguageCode[] = ['EN', 'ES', 'FR', 'DE', 'JA'];
 
   if (language && supportedLanguages.includes(language as LanguageCode)) {
     return {

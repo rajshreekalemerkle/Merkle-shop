@@ -595,3 +595,9 @@ body {
 a {
   text-decoration: none!important;
 }
+
+.language-selector {
+  background-color: #242833;
+  color: white;
+  border: none!important;
+}

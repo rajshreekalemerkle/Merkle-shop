@@ -144,10 +144,10 @@ export function LanguageSelector() {
     <select
       value={currentLocale}
       onChange={handleChange}
-      className="p-2 border rounded"
+      className="p-2 border rounded language-selector"
     >
       <option value="EN">English</option>
-      <option value="HI">Hindi</option>
+      <option value="ES">Spanish</option>
     </select>
   );
 }
