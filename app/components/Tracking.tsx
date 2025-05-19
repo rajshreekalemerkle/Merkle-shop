@@ -32,6 +32,7 @@ export function trackCustomerLogin(customerData: any, storefrontUrl: any,  braze
 }
 export function trackProductViewed(product: any, storefrontUrl: any) {
   console.log('trackProductViewed')
+  console.log(product);
   const eventData = {
     product_id: product.id.substring(product.id.lastIndexOf('/') + 1),
     product_name: product.title,
@@ -46,6 +47,9 @@ export function trackProductViewed(product: any, storefrontUrl: any) {
       sku: product.selectedOrFirstAvailableVariant.sku,
     },
   };
+  const viewKey = `view_count_${eventData.product_id}`;
+  console.log(viewKey);
+  window.braze.getUser().incrementCustomUserAttribute(viewKey, 1);
   //window.braze.changeUser(customerId);
   window.braze?.logCustomEvent?.("ecommerce.product_viewed", eventData);
   console.log(eventData)

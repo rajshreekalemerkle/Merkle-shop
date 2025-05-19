@@ -28,20 +28,19 @@ export function AddToCartButton({
       const merchandise = lastLine?.merchandise;
       const product = merchandise?.product;
       const productTitle = product?.title || merchandise?.title || 'Unknown Product';
-      const checkoutUrl = cart.checkoutUrl;
-      if (merchandise && product) {
-        window.braze.logCustomEvent('product_added_to_cart', {
-          product_id: product.id,
-          product_title: productTitle,
-          variant_id: merchandise.id,
-          variant_title: merchandise.title,
-          price: merchandise.price.amount,
-          quantity: lastLine.quantity,
-          checkout_url:cart.checkoutUrl
-        });
-        window.braze.getUser().setCustomUserAttribute('last_cart_product_name', productTitle);
-        window.braze.getUser().incrementCustomUserAttribute('cart_add_count', 1);
-      }
+      const cartItems = cart.lines.nodes.map((line:any) => ({
+        product_title: line.merchandise.product.title,
+        variant_title: line.merchandise.title,
+        quantity: line.quantity,
+        price: line.cost.amountPerQuantity.amount,
+        image_url: line.merchandise.image?.url, // optional
+      }));  
+      window.braze.logCustomEvent('product_added_to_cart', {
+        cart_total_quantity: cartItems.reduce((sum:any, item:any) => sum + item.quantity, 0),
+        cart_items: cartItems,
+        checkout_url: cart.checkoutUrl,
+      });
+      window.braze.getUser().incrementCustomUserAttribute('cart_add_count', cartItems.length);
       trackCartUpdated(cart, fetcher.data.storefrontUrl);
       setCartToken(cart);
     }
