@@ -9,7 +9,7 @@ export function trackCustomerLogin(customerData: any, storefrontUrl: any,  braze
   const customerSessionKey = `ab.shopify.shopify_customer_${customerId}`;
   const alreadySetCustomerInfo = sessionStorage.getItem(customerSessionKey);
   if(!alreadySetCustomerInfo) {
-    const user = braze.getUser();
+    const user = braze?.getUser();
     // To use Shopify customer ID as Braze External ID, use:
      braze.changeUser(customerId)
     // To use Shopify customer email as Braze External ID, use:
@@ -49,7 +49,7 @@ export function trackProductViewed(product: any, storefrontUrl: any) {
   };
   const viewKey = `view_count_${eventData.product_id}`;
   console.log(viewKey);
-  window.braze.getUser().incrementCustomUserAttribute(viewKey, 1);
+  window.braze?.getUser().incrementCustomUserAttribute(viewKey, 1);
   //window.braze.changeUser(customerId);
   window.braze?.logCustomEvent?.("ecommerce.product_viewed", eventData);
   console.log(eventData)

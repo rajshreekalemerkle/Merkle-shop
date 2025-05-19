@@ -40,7 +40,7 @@ export function AddToCartButton({
         cart_items: cartItems,
         checkout_url: cart.checkoutUrl,
       });
-      window.braze.getUser().incrementCustomUserAttribute('cart_add_count', cartItems.length);
+      window.braze?.getUser().incrementCustomUserAttribute('cart_add_count', cartItems.length);
       trackCartUpdated(cart, fetcher.data.storefrontUrl);
       setCartToken(cart);
     }
